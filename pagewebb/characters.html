@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎯 Recherche Personnages One Piece</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        /* 🌊 Style global */
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #000428, #004e92);
+            color: #fff;
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* 🔍 Barre de recherche */
+        .search-container {
+            margin: 50px auto;
+            text-align: center;
+            position: relative;
+        }
+
+        .search-container h2 {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            color: #FFDE59;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .search-container input {
+            padding: 15px;
+            font-size: 18px;
+            width: 400px;
+            border: none;
+            border-radius: 30px;
+            outline: none;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            color: #333;
+            transition: transform 0.3s;
+        }
+
+        .search-container input:focus {
+            transform: scale(1.05);
+        }
+
+        /* 🎴 Cartes des personnages */
+        .results-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 30px;
+            gap: 20px;
+        }
+
+        .character-card {
+            background: linear-gradient(135deg, #1a1a1a, #333);
+            border: 2px solid #FFDE59;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+            width: 260px;
+            overflow: hidden;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.5s, box-shadow 0.5s;
+        }
+
+        .character-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.7);
+        }
+
+        .character-card img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-bottom: 2px solid #FFDE59;
+        }
+
+        .character-card h4 {
+            margin: 15px 0 10px;
+            font-size: 1.5rem;
+            color: #FFDE59;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .character-card p {
+            margin: 5px 0;
+            color: #ddd;
+            font-size: 1.1rem;
+        }
+
+        /* 🌌 Footer */
+        footer {
+            text-align: center;
+            padding: 15px;
+            background-color: rgba(255, 255, 255, 0.1);
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+            backdrop-filter: blur(5px);
+            color: #FFDE59;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 🔍 Barre de recherche -->
+    <div class="search-container">
+        <h2>🔍 Rechercher un personnage One Piece</h2>
+        <input 
+            type="text" 
+            id="search-bar" 
+            placeholder="Tapez un nom de personnage..." 
+            oninput="filterCharacters()"
+        >
+    </div>
+
+    <!-- 🎴 Résultats des personnages -->
+    <div id="results-container" class="results-container"></div>
+
+    <!-- 🌌 Footer -->
+    <footer>
+        ⚓️ Créé par Islam Belkadi - One Piece Universe ⚓️
+    </footer>
+
+    <script>
+        let characters = [];
+
+        // 🌐 Récupération des personnages via API
+        async function fetchCharacters() {
+            const apiURL = "https://api.api-onepiece.com/v2/characters/fr";
+            try {
+                const response = await fetch(apiURL);
+                if (!response.ok) throw new Error(`Erreur HTTP : ${response.status}`);
+                const data = await response.json();
+                if (Array.isArray(data)) {
+                    characters = data;
+                    renderCharacters(characters);
+                } else {
+                    throw new Error("Format de réponse inattendu !");
+                }
+            } catch (error) {
+                console.error("Erreur lors de la récupération des personnages :", error);
+                document.getElementById("results-container").innerHTML = "<p>❌ Impossible de récupérer les données.</p>";
+            }
+        }
+
+        // 🔍 Filtrer les personnages
+        function filterCharacters() {
+            const query = document.getElementById("search-bar").value.toLowerCase();
+            const filteredCharacters = characters.filter(character =>
+                character.name?.toLowerCase().includes(query)
+            );
+            renderCharacters(filteredCharacters);
+        }
+
+        // 🖼️ Afficher les personnages sous forme de cartes
+        function renderCharacters(characterList) {
+            const container = document.getElementById("results-container");
+            container.innerHTML = "";
+
+            if (characterList.length === 0) {
+                container.innerHTML = "<p>⚠️ Aucun personnage trouvé.</p>";
+                return;
+            }
+
+            characterList.forEach(character => {
+                const card = document.createElement("div");
+                card.classList.add("character-card");
+
+                const imageUrl = character.fruit?.filename || "https://picsum.photos/200";
+                const crewName = character.crew?.name || "Inconnu";
+                const fruitName = character.fruit?.name || "Aucun fruit";
+                const size = character.size || "Non spécifiée";
+                const age = character.age || "Non spécifié";
+                const bounty = character.bounty || "Non spécifiée";
+                const job = character.job || "Inconnu";
+
+                card.innerHTML = `
+                    <img src="${imageUrl}" alt="${character.name}">
+                    <h4>${character.name || "Nom inconnu"}</h4>
+                    <p><strong>💼 Job :</strong> ${job}</p>
+                    <p><strong📏 Taille :</strong> ${size}</p>
+                    <p><strong>🎂 Âge :</strong> ${age}</p>
+                    <p><strong>💰 Prime :</strong> ${bounty}</p>
+                    <p><strong>⚓️ Équipage :</strong> ${crewName}</p>
+                    <p><strong>🍇 Fruit :</strong> ${fruitName}</p>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // 🚀 Lancement au chargement
+        fetchCharacters();
+    </script>
+
+</body>
+</html>
+

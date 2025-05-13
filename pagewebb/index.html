@@ -1,0 +1,105 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+   <div class="legrand">
+    <header>
+        <i class="fas fa-bars"></i>
+        <span>Accueil</span>
+        <i class="fas fa-search"></i>
+    </header>
+
+    <div class="slideshow-container">
+        <img src="../asets/shanks.jpg" alt="Image 1" class="active">
+        <img src="../asets/wano.jpg" alt="Image 2">
+    </div>
+
+    <div class="stats">
+        <div>
+            <span class="label">PAGES</span>
+            <span class="value">7k</span>
+        </div>
+        <div>
+            <span class="label">IMAGES</span>
+            <span class="value">0</span>
+        </div>
+        <div>
+            <span class="label">VIDÉOS</span>
+            <span class="value">0</span>
+        </div>
+    </div>
+
+    <div class="grid-container">
+        <div class="grid-item">
+        <img onclick="redirectToCharacters()" src="../asets/personnage.jpg" alt="Personnages">
+        <div class="overlay-text">Personnages</div>
+        </div>
+        <div onclick="redirectTofeed()" class="grid-item cta">
+            <p>Vous avez des questions ou des suggestions ?</p>
+            <button>ON EN DISCUTE !</button>
+        </div>
+        <div class="grid-item">
+            <img onclick="redirectfruit()" src="../asets/fruit.jpg" alt="Équipages Pirates">
+            <div class="overlay-text">Fruit de demon</div>
+        </div>
+        <div class="grid-item">
+            <img onclick="redirectTosaga()" src="../asets/calm.jpg" alt="Lieux">
+            <div class="overlay-text">Saga</div>
+        </div>
+    </div>
+
+   <script>
+        // Sélectionner toutes les images
+        const images = document.querySelectorAll(".slideshow-container img");
+        let currentIndex = 0;
+
+        // Fonction pour changer d'image
+        function changeSlide() {
+            // Supprime la classe active de l'image actuelle
+            images[currentIndex].classList.remove("active");
+
+            // Passe à l'image suivante
+            currentIndex = (currentIndex + 1) % images.length;
+
+            // Ajoute la classe active à la nouvelle image
+            images[currentIndex].classList.add("active");
+        }
+
+        // Lancer le diaporama (changement toutes les 3 secondes)
+        setInterval(changeSlide, 3000);
+
+
+        function redirectToCharacters() {
+            document.querySelector(".overlay-text").textContent = "Chargement...";
+            setTimeout(() => {
+                window.location.href = "characters.html";
+            }, 1000); // Redirection après 1 seconde
+        }
+        function redirectTosaga() {
+            document.querySelector(".overlay-text").textContent = "Chargement...";
+            setTimeout(() => {
+                window.location.href = "saga.html";
+            }, 1000); // Redirection après 1 seconde
+        }
+        function redirectfruit() {
+            document.querySelector(".overlay-text").textContent = "Chargement...";
+            setTimeout(() => {
+                window.location.href = "fruit.html";
+            }, 1000); // Redirection après 1 seconde
+        }
+        function redirectTofeed() {
+            setTimeout(() => {
+                window.location.href = "feed.html";
+            }, 1000); // Redirection après 1 seconde
+        }
+   </script>
+
+    </div>
+    
+
+</body>
+</html>

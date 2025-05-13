@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💬 Feedback - One Piece App</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        /* 🌌 Style global */
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #000428, #004e92);
+            color: #fff;
+            font-family: 'Arial', sans-serif;
+            min-height: 100vh;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #FFD700;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+        }
+
+        form {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+            width: 350px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            text-align: left;
+        }
+
+        label {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        input, textarea {
+            padding: 12px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 10px;
+            outline: none;
+            color: #333;
+            text-align: left;
+            box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        button {
+            padding: 15px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 10px;
+            background: #FFD700;
+            color: #000;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #FFA500;
+        }
+
+        .message {
+            margin-top: 20px;
+            color: #FFD700;
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+
+    <h2>💬 Donnez votre avis !</h2>
+
+    <form id="feedbackForm">
+        <label for="username">👤 Nom d'utilisateur :</label>
+        <input type="text" id="username" name="username" required>
+
+        <label for="email">📧 Adresse e-mail :</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="comment">✍️ Commentaire :</label>
+        <textarea id="comment" name="comment" required></textarea>
+
+        <button type="button" onclick="submitFeedback()">🚀 Envoyer</button>
+    </form>
+
+    <div class="message" id="responseMessage"></div>
+
+    <script>
+        async function submitFeedback() {
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const comment = document.getElementById('comment').value;
+
+            if (!username || !email || !comment) {
+                alert("Veuillez remplir tous les champs !");
+                return;
+            }
+
+            const feedbackData = {
+                username: username,
+                email: email,
+                comment: comment,
+                date: new Date().toISOString()
+            };
+
+            try {
+                const response = await fetch('http://localhost/test/src/pagewebb/feed.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(feedbackData)
+                });
+
+                if (response.ok) {
+                    document.getElementById('responseMessage').innerText = "🎉 Merci pour votre retour !";
+                    document.getElementById('feedbackForm').reset();
+                } else {
+                    document.getElementById('responseMessage').innerText = "❌ Erreur lors de l'envoi du commentaire.";
+                }
+            } catch (error) {
+                console.error('Erreur de soumission :', error);
+                document.getElementById('responseMessage').innerText = "❌ Une erreur s'est produite.";
+            }
+        }
+    </script>
+
+</body>
+</html>

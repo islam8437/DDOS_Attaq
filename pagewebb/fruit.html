@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍇 Recherche de Fruits du Démon - One Piece</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        /* 🌌 Style global */
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #3e5151, #decba4);
+            color: #fff;
+            font-family: 'Courier New', Courier, monospace;
+            min-height: 100vh;
+            text-align: center;
+            overflow-x: hidden;
+        }
+
+        /* 🔍 Barre de recherche */
+        .search-container {
+            margin: 50px auto;
+            text-align: center;
+            position: relative;
+        }
+
+        .search-container h2 {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            color: #FFD700;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .search-container input {
+            padding: 15px;
+            font-size: 20px;
+            width: 400px;
+            border: none;
+            border-radius: 30px;
+            outline: none;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            color: #333;
+            transition: transform 0.3s;
+        }
+
+        .search-container input:focus {
+            transform: scale(1.05);
+        }
+
+        /* 🍇 Cartes des fruits */
+        .results-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 30px;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .fruit-card {
+            background: linear-gradient(135deg, #5a3f37, #2c7744);
+            border: 2px solid #FFD700;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+            width: 300px;
+            overflow: hidden;
+            text-align: center;
+            transition: transform 0.5s, box-shadow 0.5s;
+            padding: 20px;
+        }
+
+        .fruit-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.7);
+        }
+
+        .fruit-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-bottom: 2px solid #FFD700;
+            border-radius: 15px;
+        }
+
+        .fruit-card h4 {
+            margin: 15px 0 10px;
+            font-size: 1.5rem;
+            color: #FFD700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .fruit-card p {
+            margin: 5px 0;
+            color: #ddd;
+            font-size: 1.1rem;
+            text-align: justify;
+            padding: 0 10px;
+        }
+
+        /* 🌌 Footer */
+        footer {
+            text-align: center;
+            padding: 15px;
+            background-color: rgba(255, 255, 255, 0.1);
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+            backdrop-filter: blur(5px);
+            color: #FFD700;
+            letter-spacing: 1px;
+        }
+
+        .back-link {
+            margin-top: 20px;
+            display: inline-block;
+            color: #FFD700;
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: color 0.3s;
+        }
+
+        .back-link:hover {
+            color: #FFA500;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 🔍 Barre de recherche -->
+    <div class="search-container">
+        <h2>🍇 Rechercher un Fruit du Démon</h2>
+        <input 
+            type="text" 
+            id="search-bar" 
+            placeholder="Tapez le nom d'un fruit..." 
+            oninput="filterFruits()"
+        >
+    </div>
+
+    <!-- 🍇 Résultats des fruits -->
+    <div id="results-container" class="results-container"></div>
+
+    <!-- 🔙 Lien de retour -->
+    <a href="index.html" class="back-link">⬅️ Retour à l'accueil</a>
+
+    <!-- 🌌 Footer -->
+    <footer>
+        🍇 One Piece Demon Fruits Explorer by islam Belkadi ☠️
+    </footer>
+
+    <script>
+        let fruits = [];
+
+        // 🌐 Récupération des fruits via API
+        async function fetchFruits() {
+            const apiURL = "https://api.api-onepiece.com/v2/fruits/en";
+            try {
+                const response = await fetch(apiURL);
+                if (!response.ok) throw new Error(`Erreur HTTP : ${response.status}`);
+                const data = await response.json();
+                if (Array.isArray(data)) {
+                    fruits = data;
+                    renderFruits(fruits);
+                } else {
+                    throw new Error("Format de réponse inattendu !");
+                }
+            } catch (error) {
+                console.error("Erreur lors de la récupération des fruits :", error);
+                document.getElementById("results-container").innerHTML = "<p>❌ Impossible de récupérer les données.</p>";
+            }
+        }
+
+        // 🔍 Filtrer les fruits
+        function filterFruits() {
+            const query = document.getElementById("search-bar").value.toLowerCase();
+            const filteredFruits = fruits.filter(fruit =>
+                fruit.name?.toLowerCase().includes(query)
+            );
+            renderFruits(filteredFruits);
+        }
+
+        // 🍇 Afficher les fruits sous forme de cartes
+        function renderFruits(fruitList) {
+            const container = document.getElementById("results-container");
+            container.innerHTML = "";
+
+            if (fruitList.length === 0) {
+                container.innerHTML = "<p>⚠️ Aucun fruit trouvé.</p>";
+                return;
+            }
+
+            fruitList.forEach(fruit => {
+                const card = document.createElement("div");
+                card.classList.add("fruit-card");
+
+                card.innerHTML = `
+                    <img src="${fruit.filename}" alt="${fruit.name}">
+                    <h4>${fruit.name || "Nom inconnu"}</h4>
+                    <p><strong>🍇 Nom Romanisé :</strong> ${fruit.roman_name}</p>
+                    <p><strong>⚙️ Type :</strong> ${fruit.type}</p>
+                    <p>${fruit.description}</p>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // 🚀 Lancement au chargement
+        fetchFruits();
+    </script>
+
+</body>
+</html>

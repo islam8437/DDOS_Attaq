@@ -1,0 +1,197 @@
+body
+{
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: skyblue;
+    padding: 10px 20px;
+    color: white;
+}
+
+span
+{
+    width: 70%;
+    font-size: 25px;
+   
+}
+ 
+i {
+    font-size: 24px; /* Taille des icônes */
+    cursor: pointer; /* Ajoute un pointeur survol */
+}
+
+.slideshow-container {
+    position: relative;
+    width: 100%; /* Prend toute la largeur de l'écran */
+    /* Optionnel : largeur maximale */
+    height: 400px; /* Hauteur fixe */
+    margin: auto; /* Centre horizontalement */
+    overflow: hidden; /* Cache les débordements */
+    background-color: #000; /* Fond noir si aucune image n'est affichée */
+}
+
+/* Images */
+.slideshow-container img {
+    position: absolute;
+    width: 100%; /* L'image occupe toute la largeur du conteneur */
+    height: 100%; /* L'image occupe toute la hauteur */
+    object-fit: cover; /* Ajuste l'image pour remplir le conteneur */
+    opacity: 0; /* Les images sont invisibles par défaut */
+    transition: opacity 1s ease-in-out; /* Transition fluide pour apparaître/disparaître */
+}
+
+/* Image active */
+.slideshow-container img.active {
+    opacity: 1; /* L'image active est visible */
+}
+
+.stats {
+    display: flex; /* Utilisation de flexbox */
+    justify-content: space-around; /* Espace égal entre les colonnes */
+    align-items: center; /* Centre verticalement */
+    background-color: #f5f5f5; /* Fond gris clair */
+    padding: 20px 0; /* Espacement vertical */
+    border-top: 1px solid #ddd; /* Ligne en haut */
+    border-bottom: 1px solid #ddd; /* Ligne en bas */
+}
+.stats div {
+    text-align: center; /* Centre le texte */
+}
+
+/* Titre des statistiques */
+.stats div span.label {
+    display: block;
+    font-size: 14px; /* Taille du texte du titre */
+    color: #555; /* Couleur grise */
+    margin-bottom: 5px; /* Espacement avec la valeur */
+    font-weight: bold;
+}
+
+/* Valeurs des statistiques */
+.stats div span.value {
+    font-size: 24px; /* Taille plus grande pour la valeur */
+    color: #000; /* Couleur noire */
+    font-weight: bold;
+}
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 colonnes */
+    gap: 10px; /* Espacement entre les éléments */
+    padding: 10px;
+}
+
+/* Bloc individuel */
+.grid-item {
+    position: relative; /* Positionnement relatif pour superposer le texte */
+    overflow: hidden; /* Cache le débordement */
+    border-radius: 8px; /* Coins arrondis */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Ombre légère */
+}
+
+/* Image */
+.grid-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.3s ease; /* Zoom au survol */
+}
+
+/* Effet de zoom au survol */
+.grid-item:hover img {
+    transform: scale(1.1); /* Agrandissement */
+}
+
+/* Texte superposé */
+.grid-item .overlay-text {
+    position: absolute;
+    bottom: 10px; /* Positionné en bas */
+    left: 10px;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Ombre pour lisibilité */
+    background-color: rgba(0, 0, 0, 0.5); /* Fond semi-transparent */
+    padding: 5px 10px; /* Espacement autour du texte */
+    border-radius: 5px; /* Coins arrondis */
+}
+
+/* Bloc d'appel à l'action */
+.cta {
+    background-color: #0078d7; /* Bleu */
+    color: white;
+    text-align: center;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 10px; /* Espacement autour */
+    font-size: 18px;
+}
+
+.cta button {
+    background-color: white;
+    color: #0078d7;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.cta button:hover {
+    background-color: #005bb5; /* Bleu plus foncé au survol */
+    color: white;
+}
+
+.character-card {
+    text-align: center;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.character-card img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.character-card h4 {
+    margin: 10px 0 0;
+    font-size: 16px;
+}
+
+/* Pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    margin: 20px 0;
+}
+
+.pagination button {
+    padding: 10px 15px;
+    border: none;
+    background-color: #0078d7;
+    color: white;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.pagination button:hover {
+    background-color: #005bb5;
+}
+
+.pagination button.disabled {
+    background-color: #ddd;
+    color: #aaa;
+    cursor: not-allowed;
+}
